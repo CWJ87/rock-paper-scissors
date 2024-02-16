@@ -24,64 +24,70 @@ function getComputerChoice() {
     }
 }
 
-// plays a single round of Rock Paper Scissors
-function playRound(playerSelection, computerSelection) {    
-    // player's and computer's selection formatted
-    const captalizedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-    const capitalizedComputerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase();
+// capitalizes the first letter of a string
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
-    // determine winner based on player's and computer's selection
+// determines the winner of a round
+function determineWinner(playerSelection, computerSelection) {
     if (playerSelection === computerSelection) {
-        return `Draw Game! You both chose ${capitalizedComputerSelection}`;
+        return "Draw";
+    }
+    else if(
+        (playerSelection === "rock" && computerSelection === "scissors") ||
+        (playerSelection === "scissors" && computerSelection === "paper") ||
+        (playerSelection === "paper" && computerSelection === "rock")
+    ) {
+        return "Player";
     }
     else {
-        const combinedSelection = `${playerSelection} ${computerSelection}`;
-
-        switch (combinedSelection) {
-            case "rock scissors":
-            case "scissors paper":
-            case "paper rock":
-                updatePlayerScore();
-                return `You Win! ${captalizedPlayerSelection} beats ${capitalizedComputerSelection}`;
-            default:
-                updateComputerScore();
-                return `You Lose! ${capitalizedComputerSelection} beats ${captalizedPlayerSelection}`;
-        }
+        return "Computer";
     }
 }
 
-// increment player's score
-function updatePlayerScore() {
+// plays a single round of Rock Paper Scissors and returns results
+function playRound(playerSelection, computerSelection) {    
+    // player's and computer's selection formatted
+    const capitalizedPlayerSelection = capitalizeFirstLetter(playerSelection);
+    const capitalizedComputerSelection = capitalizeFirstLetter(computerSelection);
+    const winner = determineWinner(playerSelection.toLowerCase(), computerSelection);
 
-    
-}
-
-// increment computer's score
-function updateComputerScore() {
-    
+    switch (winner) {
+        case "Player":
+            return `You Win! ${capitalizedPlayerSelection} beats ${capitalizedComputerSelection}`;        
+        case "Computer":
+            return `You Lose! ${capitalizedComputerSelection} beats ${capitalizedPlayerSelection}`;
+        case "Draw":
+            return `Draw Game! You both chose ${capitalizedComputerSelection}`;
+    }
 }
 
 // starts and plays five rounds of rock paper scissors
 function playGame() {
     let playerScore = 0, computerScore = 0;
+    const TOTAL_ROUNDS = 5;    
 
-    for (let roundCount = 1; roundCount <= 5; roundCount++) {            
-        const roundResult = playRound(getPlayerChoice(), getComputerChoice());
-        console.log(roundResult);
-    }
+    for (let roundCount = 1; roundCount <= TOTAL_ROUNDS; roundCount++) {            
+        const playerSelection = getPlayerChoice();
+        const computerSelection = getComputerChoice();
+        const roundResult = playRound(playerSelection, computerSelection);
+        
+        // update the score and display the result of the round
+        if (roundResult.includes("Win")) {
+            playerScore++;            
+        }
+        else if (roundResult.includes("Lose")) {
+            computerScore++;            
+        }
+        
+        console.log(`ROUND ${roundCount} of ${TOTAL_ROUNDS}: ${roundResult}`);
+    } // end of the game
 
-
-    details
-    --------
-    - play five rounds
-    - keep score
-    - reports a winner or loser (or draw game if tied) at the end
-
-    1. INIT playerScore and computerScore to 0.
-    2. FOR roundCount = 1; roundCount <= 5 (5 total rounds)
-    3.  READ player's choice ("rock", "paper", or "scissors") into playerSelection
-    4.  CALL playRound to determine who won or if a draw occurred
-    5.  DISPLAY the result of the game after each roundCount
-    6. ENDFOR
-    7. DISPLAY the winner, loser, or if the game ended in a draw
+    console.log("GAME OVER");
+    console.log(`Final Score: YOUR SCORE - ${playerScore} | COMPUTER SCORE - ${computerScore}`);
 }
+
+console.log("ROCK PAPER SCISSORS");
+console.log("-------------------");
+playGame();
