@@ -66,23 +66,7 @@ function playRound(playerSelection, computerSelection) {
 // starts and plays five rounds of rock paper scissors
 function playGame() {
     let playerScore = 0, computerScore = 0;
-    const TOTAL_ROUNDS = 5;    
-
-    for (let roundCount = 1; roundCount <= TOTAL_ROUNDS; roundCount++) {            
-        const playerSelection = getPlayerChoice();
-        const computerSelection = getComputerChoice();
-        const roundResult = playRound(playerSelection, computerSelection);
-        
-        // update the score and display the result of the round
-        if (roundResult.includes("Win")) {
-            playerScore++;            
-        }
-        else if (roundResult.includes("Lose")) {
-            computerScore++;            
-        }
-        
-        console.log(`ROUND ${roundCount} of ${TOTAL_ROUNDS}: ${roundResult}`);
-    } // end of the game
+   
 
     console.log("GAME OVER");
     console.log(`Final Score: YOUR SCORE - ${playerScore} | COMPUTER SCORE - ${computerScore}`);
