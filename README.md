@@ -3,6 +3,9 @@
 ## Overview
 The purpose of this project is to build a text version of the game "rock paper scissors" using JavaScript. The game will be played from the browser console, but will later have a Graphical User Interface with buttons and text.
 
+Update (2/24/2024)
+- The game now has a UI
+
 ## Usage
 To play the the text version of Rock Paper Scissors you will need to open the console on your web browser. Below are the commands to open the console for your browser:
 | Browser | Command |
