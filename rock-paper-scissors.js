@@ -1,11 +1,15 @@
 "use strict";
 
-// gets the player's choice
-function getPlayerChoice() {   
-    let playerChoice = prompt("Please select your choice: ROCK | PAPER | SCISSORS").toLowerCase();
+const gameChoices = (document.querySelectorAll(".choice"));
+const gameDisplay = document.querySelector(".results > p");
 
-    return playerChoice;
-}
+gameChoices.forEach(choice => {    
+    choice.addEventListener("click", (e) => {
+        const playerChoice = choice.getAttribute("id");
+        const computerChoice = getComputerChoice();        
+        playRound(playerChoice, computerChoice);
+    });
+});
 
 // randomly returns "Rock", "Paper", or "Scissors"
 function getComputerChoice() {
@@ -22,11 +26,6 @@ function getComputerChoice() {
         case 2:
             return "scissors";
     }
-}
-
-// capitalizes the first letter of a string
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 // determines the winner of a round
@@ -47,19 +46,18 @@ function determineWinner(playerSelection, computerSelection) {
 }
 
 // plays a single round of Rock Paper Scissors and returns results
-function playRound(playerSelection, computerSelection) {    
-    // player's and computer's selection formatted
-    const capitalizedPlayerSelection = capitalizeFirstLetter(playerSelection);
-    const capitalizedComputerSelection = capitalizeFirstLetter(computerSelection);
-    const winner = determineWinner(playerSelection.toLowerCase(), computerSelection);
+function playRound(playerSelection, computerSelection) {
+    const roundResult = determineWinner(playerSelection, computerSelection);
 
-    switch (winner) {
-        case "Player":
-            return `You Win! ${capitalizedPlayerSelection} beats ${capitalizedComputerSelection}`;        
-        case "Computer":
-            return `You Lose! ${capitalizedComputerSelection} beats ${capitalizedPlayerSelection}`;
+    switch (roundResult){
         case "Draw":
-            return `Draw Game! You both chose ${capitalizedComputerSelection}`;
+            gameDisplay.textContent = "Draw Game!";
+            break;
+        case "Player":
+            gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU WIN!`;
+            break;
+        case "Computer":
+            gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU LOSE!`;
     }
 }
 
