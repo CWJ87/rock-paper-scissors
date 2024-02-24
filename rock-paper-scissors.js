@@ -1,7 +1,11 @@
 "use strict";
 
-const gameChoices = (document.querySelectorAll(".choice"));
+const gameChoices = document.querySelectorAll(".choice");
+const playerScoreDisplay = document.querySelector(".player-score");
+const computerScoreDisplay = document.querySelector(".computer-score");
 const gameDisplay = document.querySelector(".results > p");
+
+let playerScore = 0, computerScore = 0;
 
 gameChoices.forEach(choice => {    
     choice.addEventListener("click", (e) => {
@@ -33,7 +37,7 @@ function determineWinner(playerSelection, computerSelection) {
     if (playerSelection === computerSelection) {
         return "Draw";
     }
-    else if(
+    else if (
         (playerSelection === "rock" && computerSelection === "scissors") ||
         (playerSelection === "scissors" && computerSelection === "paper") ||
         (playerSelection === "paper" && computerSelection === "rock")
@@ -54,10 +58,24 @@ function playRound(playerSelection, computerSelection) {
             gameDisplay.textContent = "Draw Game!";
             break;
         case "Player":
+            hasPlayerWonRound(true);
             gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU WIN!`;
             break;
         case "Computer":
+            hasPlayerWonRound(false);
             gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU LOSE!`;
+    }
+}
+
+// updates the player's score if they won the round
+function hasPlayerWonRound(playerWon) {
+    if (playerWon) {
+        playerScore += 1;
+        playerScoreDisplay.textContent = `Player: ${playerScore}`;
+    }
+    else {
+        computerScore += 1;
+        computerScoreDisplay.textContent = `Computer: ${computerScore}`;
     }
 }
 
