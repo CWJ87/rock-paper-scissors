@@ -4,6 +4,7 @@ const gameChoices = document.querySelectorAll(".choice");
 const playerScoreDisplay = document.querySelector(".player-score");
 const computerScoreDisplay = document.querySelector(".computer-score");
 const gameDisplay = document.querySelector(".results > p");
+const newGameBtn = document.querySelector(".new-game-btn");
 
 let playerScore = 0, computerScore = 0;
 
@@ -14,6 +15,8 @@ gameChoices.forEach(choice => {
         playRound(playerChoice, computerChoice);
     });
 });
+
+newGameBtn.addEventListener("click", startNewGame);
 
 // randomly returns "Rock", "Paper", or "Scissors"
 function getComputerChoice() {
@@ -79,15 +82,12 @@ function hasPlayerWonRound(playerWon) {
     }
 }
 
-// starts and plays five rounds of rock paper scissors
-function playGame() {
-    let playerScore = 0, computerScore = 0;
-   
+// reset the scores to 0 and start a new game
+function startNewGame() {
+    playerScore = 0;
+    computerScore = 0;
 
-    console.log("GAME OVER");
-    console.log(`Final Score: YOUR SCORE - ${playerScore} | COMPUTER SCORE - ${computerScore}`);
+    playerScoreDisplay.textContent = `Player: ${playerScore}`;
+    computerScoreDisplay.textContent = `Computer: ${computerScore}`;
+    gameDisplay.textContent = "Please select a choice";
 }
-
-console.log("ROCK PAPER SCISSORS");
-console.log("-------------------");
-playGame();
