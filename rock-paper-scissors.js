@@ -4,7 +4,7 @@ const gameChoices = document.querySelectorAll(".choice");
 const playerScoreDisplay = document.querySelector(".player-score");
 const computerScoreDisplay = document.querySelector(".computer-score");
 const gameDisplay = document.querySelector(".results > p");
-const newGameBtn = document.querySelector(".new-game-btn");
+const MAX_WINS = 5; // total number of points to win the game
 
 let playerScore = 0, computerScore = 0;
 
@@ -16,7 +16,6 @@ gameChoices.forEach(choice => {
     });
 });
 
-newGameBtn.addEventListener("click", startNewGame);
 
 // randomly returns "Rock", "Paper", or "Scissors"
 function getComputerChoice() {
@@ -56,30 +55,32 @@ function determineWinner(playerSelection, computerSelection) {
 function playRound(playerSelection, computerSelection) {
     const roundResult = determineWinner(playerSelection, computerSelection);
 
-    switch (roundResult){
+    switch (roundResult) {
         case "Draw":
             gameDisplay.textContent = "Draw Game!";
             break;
         case "Player":
-            hasPlayerWonRound(true);
             gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU WIN!`;
+            hasPlayerWonRound(true);
             break;
         case "Computer":
-            hasPlayerWonRound(false);
             gameDisplay.textContent = `The Computer chose ${computerSelection.toUpperCase()}. YOU LOSE!`;
+            hasPlayerWonRound(false);
     }
 }
 
 // updates the player's score if they won the round
 function hasPlayerWonRound(playerWon) {
     if (playerWon) {
-        playerScore += 1;
-        playerScoreDisplay.textContent = `Player: ${playerScore}`;
+        ++playerScore;
+        playerScoreDisplay.textContent = `Player: ${playerScore}`;        
     }
     else {
-        computerScore += 1;
-        computerScoreDisplay.textContent = `Computer: ${computerScore}`;
+        ++computerScore;
+        computerScoreDisplay.textContent = `Computer: ${computerScore}`;        
     }
+
+    hasGameEnded();
 }
 
 // reset the scores to 0 and start a new game
@@ -90,4 +91,30 @@ function startNewGame() {
     playerScoreDisplay.textContent = `Player: ${playerScore}`;
     computerScoreDisplay.textContent = `Computer: ${computerScore}`;
     gameDisplay.textContent = "Please select a choice";
+    this.remove();
+
+    gameChoices.forEach(choice => {
+        choice.classList.toggle("disabled");
+    });
+
+}
+
+function hasGameEnded() {
+    if (playerScore === MAX_WINS || computerScore === MAX_WINS) {        
+        const winner = playerScore === MAX_WINS ? "Player":"Computer";
+        const message = winner === "Player" ? "Congratulations! You win!" : "Computer wins! Better luck next time.";
+        const newGameBtn = document.createElement("button");
+
+        gameDisplay.textContent = message;        
+                
+        gameChoices.forEach(choice => {
+            choice.classList.toggle("disabled");
+        });
+
+        newGameBtn.textContent = "New Game";
+        newGameBtn.setAttribute("class", "new-game-btn");
+        document.body.appendChild(newGameBtn);
+
+        newGameBtn.addEventListener("click", startNewGame);
+    }
 }
